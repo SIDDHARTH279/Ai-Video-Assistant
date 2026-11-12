@@ -1,134 +1,99 @@
 # 🎬 AI Video Assistant
 
-An AI-powered Video & Meeting Assistant that turns long videos and meeting recordings into meaningful, searchable information.
+An AI-powered application that transforms YouTube videos and local audio/video recordings into structured, searchable knowledge.
 
-Simply provide a YouTube URL or a local audio/video file, and the application will transcribe the content, generate summaries, extract action items and key decisions, and let you ask questions about the recording using Retrieval-Augmented Generation (RAG).
+AI Video Assistant helps you understand long videos and meetings without watching or listening to the entire recording. It automatically generates transcripts, summarizes content, extracts important information, and allows you to ask questions about the video using Retrieval-Augmented Generation (RAG).
 
 ## ✨ Features
 
-- **YouTube & Local File Support:** Process YouTube videos and local audio/video recordings.
-- **Speech-to-Text:** Transcribe English audio using OpenAI Whisper.
-- **Hinglish Support:** Transcribe Hinglish audio and translate it into English using Sarvam AI.
-- **AI Summarization:** Generate concise, structured meeting summaries.
-- **Title Generation:** Automatically generate meaningful titles from transcripts.
-- **Action Item Extraction:** Identify important tasks and follow-up activities.
-- **Key Decision Extraction:** Extract important decisions discussed during meetings.
-- **Open Questions:** Identify unresolved questions from conversations.
-- **Chat with Your Meeting:** Ask questions about your recording and get context-aware answers using RAG.
-- **Interactive Dashboard:** Track processing stages and explore results through a Streamlit interface.
+- 🎥 **YouTube Video Processing:** Process videos directly using YouTube URLs.
+- 📁 **Local File Support:** Upload local audio and video recordings.
+- 🎙️ **Audio Transcription:** Convert speech into text using AI-powered speech recognition.
+- 📝 **AI Summarization:** Generate meaningful summaries of long recordings.
+- 📌 **Title Generation:** Automatically generate relevant titles.
+- ✅ **Action Item Extraction:** Identify important tasks and follow-up activities.
+- 🔑 **Key Decision Extraction:** Extract important decisions from conversations.
+- ❓ **Open Questions:** Identify unresolved questions and discussion points.
+- 💬 **Chat with Videos:** Ask questions and get contextual answers using RAG.
+
+## 🏗️ Architecture
+
+The application follows an end-to-end AI processing pipeline:
+
+```text
+       YouTube URL / Local Media
+                  |
+                  v
+          Audio Processing
+                  |
+                  v
+          Speech Transcription
+                  |
+                  v
+             Transcript
+                  |
+                  v
+           LLM Processing
+                  |
+          +-------+-------+
+          |       |       |
+          v       v       v
+       Summary  Actions Decisions
+                  |
+                  v
+            Text Chunking
+                  |
+                  v
+             Embeddings
+                  |
+                  v
+             Vector Store
+                  |
+                  v
+           Similarity Search
+                  |
+                  v
+           Context Retrieval
+                  |
+                  v
+              LLM Chain
+                  |
+                  v
+             AI Chatbot
+```
 
 ## 🛠️ Tech Stack
 
 | Technology | Purpose |
 |---|---|
 | Python | Core development |
-| Streamlit | Frontend and user interface |
+| Streamlit | User interface |
 | LangChain | LLM orchestration |
-| LCEL | Building AI pipelines |
-| Mistral AI | Summarization and information extraction |
-| OpenAI Whisper | English speech transcription |
-| Sarvam AI | Hinglish transcription and translation |
-| HuggingFace Embeddings | Text embeddings |
-| ChromaDB | Vector database |
+| LangChain LCEL | Building AI processing chains |
+| LLM API | Summarization and question answering |
+| Speech-to-Text Model | Audio transcription |
+| HuggingFace | Text embeddings |
+| ChromaDB | Vector storage |
 | FFmpeg | Audio/video processing |
-| Pydub | Audio conversion and chunking |
-| yt-dlp | YouTube audio downloading |
+| yt-dlp | YouTube media processing |
 
-## 🏗️ Project Architecture
+## ⚙️ Installation
 
-The application follows a modular processing pipeline:
-
-```text
-YouTube URL / Local Audio-Video File
-                  |
-                  v
-          Audio Processing
-          (yt-dlp / FFmpeg)
-                  |
-                  v
-            Audio Chunking
-                (Pydub)
-                  |
-                  v
-           Speech-to-Text
-           /             \
-       English          Hinglish
-       Whisper           Sarvam AI
-           \             /
-                  |
-                  v
-             Transcript
-                  |
-                  v
-          LLM Processing
-            (Mistral AI)
-                  |
-          +-------+-------+
-          |       |       |
-          v       v       v
-        Summary Actions Decisions
-                  |
-                  v
-           Open Questions
-                  |
-                  v
-             RAG Pipeline
-                  |
-          +-------+-------+
-          |               |
-      Embeddings       ChromaDB
-          |               |
-          +-------+-------+
-                  |
-                  v
-           Context Retrieval
-                  |
-                  v
-           Mistral AI + LCEL
-                  |
-                  v
-          Contextual Answers
-```
-
-## 📂 Project Structure
-
-```text
-AI-Video-Assistant/
-│
-├── core/
-│   ├── transcriber.py       # Speech-to-text processing
-│   ├── summarizer.py        # Summary and title generation
-│   ├── extractor.py         # Extract action items and decisions
-│   ├── rag_engine.py        # RAG pipeline and question answering
-│   └── vector_store.py      # Embeddings and ChromaDB operations
-│
-├── utils/
-│   └── audio_processor.py   # Audio downloading and processing
-│
-├── app.py                   # Streamlit application
-├── main.py                  # Main processing pipeline
-├── Requirements.txt         # Project dependencies
-├── .env                     # API credentials
-└── .gitignore
-```
-
-## ⚙️ Installation & Setup
-
-### 1. Clone the Repository
+### 1. Clone the repository
 
 ```bash
-git clone https://github.com/AkarshVyas/AI-Video-Assistant-.git
+git clone https://github.com/SIDDHARTH279/Ai-Video-Assistant.git
 
-cd AI-Video-Assistant-
+cd Ai-Video-Assistant
 ```
 
-### 2. Create a Virtual Environment
+### 2. Create a virtual environment
 
 ```bash
 python -m venv venv
 ```
 
-Activate the environment:
+Activate it:
 
 **Windows:**
 ```bash
@@ -140,48 +105,36 @@ venv\Scripts\activate
 source venv/bin/activate
 ```
 
-### 3. Install Dependencies
+### 3. Install dependencies
 
 ```bash
-pip install -r Requirements.txt
+pip install -r requirements.txt
 ```
 
-### 4. Install FFmpeg
+### 4. Configure environment variables
 
-FFmpeg must be installed separately and available in your system PATH.
+Create a `.env` file in the project root and add the API credentials required by your configured providers.
 
-**Windows (using Chocolatey):**
+```env
+# Add your required API keys here
+```
+
+Never upload your `.env` file or expose API credentials on GitHub.
+
+### 5. Install FFmpeg
+
+FFmpeg is required for audio/video processing.
+
+**Windows:**
 ```bash
-choco install ffmpeg
+winget install Gyan.FFmpeg
 ```
 
-Verify installation:
+Verify the installation:
 
 ```bash
 ffmpeg -version
 ```
-
-### 5. Configure Environment Variables
-
-Create a `.env` file in the root directory:
-
-```env
-MISTRAL_API_KEY=your_mistral_api_key
-SARVAM_API_KEY=your_sarvam_api_key
-
-# Optional Whisper configuration
-WHISPER_MODEL=small
-
-# Optional Sarvam model configuration
-SARVAM_STT_MODEL=saaras:v2.5
-```
-
-Get your API credentials:
-
-- Mistral AI: https://console.mistral.ai/
-- Sarvam AI: https://dashboard.sarvam.ai/
-
-**Note:** Mistral AI is required for LLM operations. Sarvam AI is required when using Hinglish transcription. English transcription uses the locally running Whisper model.
 
 ## 🚀 Run the Application
 
@@ -191,52 +144,45 @@ Start the Streamlit application:
 streamlit run app.py
 ```
 
-Open the local URL displayed in your terminal (usually `http://localhost:8501`).
+Open the local URL displayed in your terminal.
 
 ## 📖 How to Use
 
 1. Launch the application.
-2. Enter a YouTube URL or a local audio/video file path.
-3. Select the transcription language (English or Hinglish).
-4. Click the **Analyse** button.
-5. Wait for the audio processing and AI pipeline to complete.
-6. Explore the generated title, summary, transcript, action items, key decisions and open questions.
-7. Use the chat interface to ask questions about your recording.
+2. Provide a YouTube URL or upload a local recording.
+3. Start the processing pipeline.
+4. Wait for transcription and AI analysis.
+5. Explore the generated transcript and summary.
+6. Review extracted action items, decisions and open questions.
+7. Ask questions through the chat interface.
 
-## 🧠 RAG Implementation
+## 🧠 Key GenAI Concepts Implemented
 
-The project uses Retrieval-Augmented Generation to enable conversations with meeting transcripts.
-
-The RAG workflow:
-
-1. Split the transcript into smaller text chunks.
-2. Generate embeddings using HuggingFace embedding models.
-3. Store the embeddings in ChromaDB.
-4. Retrieve the four most relevant chunks for a user query.
-5. Pass the retrieved context and question to Mistral AI.
-6. Generate a contextual answer based on the transcript.
-
-The application also uses LangChain Expression Language (LCEL) to connect the retriever, prompt template, LLM and output parser into a single processing chain.
+- **LLM Integration:** Using large language models for intelligent text generation.
+- **LangChain:** Managing LLM interactions and processing workflows.
+- **LCEL:** Composing reusable chains using LangChain Expression Language.
+- **Text Embeddings:** Converting textual information into numerical representations.
+- **Vector Databases:** Storing and retrieving semantically relevant information.
+- **RAG:** Grounding AI responses in the actual video transcript.
+- **Semantic Search:** Retrieving relevant transcript chunks based on user queries.
 
 ## 🔮 Future Improvements
 
 - Speaker identification and diarization.
 - Timestamp-based transcript navigation.
-- Export summaries and reports in PDF format.
+- Export summaries as PDF reports.
 - Support for additional languages.
-- Persistent conversation history.
-- Improved retrieval and answer evaluation.
+- Persistent chat history.
+- Improved retrieval accuracy and evaluation.
 
-## 🤝 Contributing
+## 🤝 Contributions
 
-Contributions, suggestions and feedback are welcome!
+Suggestions, feedback and contributions are always welcome!
 
-Feel free to fork the repository and submit a pull request.
-
-## 📄 License
-
-This project is available for learning and experimentation. Check the repository for licensing terms before redistributing or reusing its code.
+Feel free to fork this repository and submit a pull request.
 
 ---
 
 **Built with Python, LangChain and Generative AI.** 🚀
+
+If you find this project useful, consider giving it a ⭐!
